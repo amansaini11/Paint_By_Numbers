@@ -1,0 +1,35 @@
+﻿
+@model ImageModel
+@using System.Drawing
+
+<form asp-controller="Home" asp-action="UploadImage" method="post" enctype="multipart/form-data">
+    <input type="file" asp-for="ImagePath" name="ImagePath" />
+    <input type="submit" value="Upload Image" name="ImagePath" />
+</form>
+<h2>Original Image</h2>
+<img src='~/uploads/original_image.jpg'>
+<h1>Paint by Numbers</h1>
+<img src='~/uploads/processed_image_with_numbers.jpg'>
+
+@if (TempData["ColorInfoList"] != null)
+{
+    <div>
+        <h3>Color Information:</h3>
+
+        @for (int i = 0; i < ((List<ColorInfo>)TempData["ColorInfoList"]).Count; i++)
+        {
+            if (i > 0 && i % 15 == 0)
+            {
+                <br />
+            }
+
+            var colorInfo = ((List<ColorInfo>)TempData["ColorInfoList"])[i];
+
+            <div style="display: inline-block; margin-right: 10px;">
+                <span>Part @colorInfo.Number:</span>
+                <div style="width: 20px; height: 20px; background-color: @($"rgb({colorInfo.Color.R},{colorInfo.Color.G},{colorInfo.Color.B})")"></div>
+            </div>
+        }
+    </div>
+}
+
